@@ -36,14 +36,18 @@ class Player(CircleShape):
         if self.timer > 0:
             self.timer -= dt
 
-        if keys[pygame.K_a]:
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
             self.rotate(-dt)
-        if keys[pygame.K_d]:
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
             self.rotate(dt)
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] or keys[pygame.K_UP]:
             self.move(dt)
-        if keys[pygame.K_s]:
+        if keys[pygame.K_s] or keys[pygame.K_DOWN]:
             self.move(-dt)
+
+        # Clamp the player's position within the screen boundaries
+        self.position.x = max(self.radius, min(self.position.x, SCREEN_WIDTH - self.radius))
+        self.position.y = max(self.radius, min(self.position.y, SCREEN_HEIGHT - self.radius))
         
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
