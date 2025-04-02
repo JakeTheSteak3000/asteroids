@@ -15,6 +15,7 @@ class Player(CircleShape):
         self.timer = 0
         self.color = "white"
 
+    
     # Add the triangle method from the instructions
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -67,12 +68,16 @@ class Player(CircleShape):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         shot_velocity = forward * PLAYER_SHOOT_SPEED
         new_shot = Shot(front_point, shot_velocity, self.color)
+
+        
         return new_shot
     
     def set_cooldown(self, new_cooldown):
         self.timer = 0
         global PLAYER_SHOOT_COOLDOWN
         PLAYER_SHOOT_COOLDOWN = new_cooldown
+    
+
 
 
 

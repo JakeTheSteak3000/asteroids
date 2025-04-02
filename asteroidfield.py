@@ -37,6 +37,7 @@ class AsteroidField(pygame.sprite.Sprite):
         self.diff_2 = False
         self.diff_3 = False
         self.diff_4 = False
+        self.new_rate = ASTEROID_SPAWN_RATE
 
     def set_game_state(self, duration, score):
         self.game_duration = duration
@@ -63,15 +64,65 @@ class AsteroidField(pygame.sprite.Sprite):
         
 
     def update(self, dt):
-        self.spawn_timer += dt
-        if self.spawn_timer > ASTEROID_SPAWN_RATE:
-            self.spawn_timer = 0
+        if self.score_value >= 2000 and not hasattr(self, 'spawn_rate_mod3'):
+            self.new_rate = self.new_rate * 0.1
+            self.spawn_rate_mod3 = True
+            self.spawn_timer += dt
+            if self.spawn_timer > self.new_rate:
+                self.spawn_timer = 0
 
-            # spawn a new asteroid at a random edge
-            edge = random.choice(self.edges)
-            speed = random.randint(40, 100)
-            velocity = edge[0] * speed
-            velocity = velocity.rotate(random.randint(-30, 30))
-            position = edge[1](random.uniform(0, 1))
-            kind = random.randint(1, ASTEROID_KINDS)
-            self.spawn(ASTEROID_MIN_RADIUS * kind, position, velocity)
+                # spawn a new asteroid at a random edge
+                edge = random.choice(self.edges)
+                speed = random.randint(40, 100)
+                velocity = edge[0] * speed
+                velocity = velocity.rotate(random.randint(-30, 30))
+                position = edge[1](random.uniform(0, 1))
+                kind = random.randint(1, ASTEROID_KINDS)
+                self.spawn(ASTEROID_MIN_RADIUS * kind, position, velocity)
+        elif self.score_value >= 1500 and not hasattr(self, 'spawn_rate_mod2'):
+            self.new_rate = self.new_rate * 0.25
+            self.spawn_rate_mod2 = True
+            self.spawn_timer += dt
+            if self.spawn_timer > self.new_rate:
+                self.spawn_timer = 0
+
+                # spawn a new asteroid at a random edge
+                edge = random.choice(self.edges)
+                speed = random.randint(40, 100)
+                velocity = edge[0] * speed
+                velocity = velocity.rotate(random.randint(-30, 30))
+                position = edge[1](random.uniform(0, 1))
+                kind = random.randint(1, ASTEROID_KINDS)
+                self.spawn(ASTEROID_MIN_RADIUS * kind, position, velocity)
+        elif self.score_value >= 1000 and not hasattr(self, 'spawn_rate_mod'):
+            self.new_rate = self.new_rate * 0.5
+            self.spawn_rate_mod = True
+            self.spawn_timer += dt
+            if self.spawn_timer > self.new_rate:
+                self.spawn_timer = 0
+
+                # spawn a new asteroid at a random edge
+                edge = random.choice(self.edges)
+                speed = random.randint(40, 100)
+                velocity = edge[0] * speed
+                velocity = velocity.rotate(random.randint(-30, 30))
+                position = edge[1](random.uniform(0, 1))
+                kind = random.randint(1, ASTEROID_KINDS)
+                self.spawn(ASTEROID_MIN_RADIUS * kind, position, velocity)
+        else:
+            self.spawn_timer += dt
+            if self.spawn_timer > self.new_rate:
+                self.spawn_timer = 0
+
+                # spawn a new asteroid at a random edge
+                edge = random.choice(self.edges)
+                speed = random.randint(40, 100)
+                velocity = edge[0] * speed
+                velocity = velocity.rotate(random.randint(-30, 30))
+                position = edge[1](random.uniform(0, 1))
+                kind = random.randint(1, ASTEROID_KINDS)
+                self.spawn(ASTEROID_MIN_RADIUS * kind, position, velocity)
+
+    def set_game_state(self, duration, score):
+        self.score_value = score
+        self.game_duration = duration

@@ -40,6 +40,8 @@ def main():
     powerup_2 = False
     powerup_3 = False
 
+    
+
         
     
     running = True
@@ -66,6 +68,7 @@ def main():
 
         for asteroid in asteroids:
             if player.is_colliding(asteroid):
+                print(f"FINAL SCORE: {int(score.value)}")
                 print("Game over!")
                 sys.exit()
         
@@ -83,20 +86,32 @@ def main():
                 
 
         for shot in shots_group[:]:
+            shot_to_remove = False
             for asteroid in asteroids:
-                if shot.is_colliding(asteroid):
-                    asteroid.health -= 1
-                    shots_group.remove(shot)
-                    if asteroid.radius >= ASTEROID_MAX_RADIUS and asteroid.health <= 0:
-                        asteroid.split()
-                        score.increase(1)
-                    elif asteroid.radius < ASTEROID_MAX_RADIUS and asteroid.radius > ASTEROID_MIN_RADIUS and asteroid.health <= 0:
-                        asteroid.split()
-                        score.increase(2)
-                    elif asteroid.radius == ASTEROID_MIN_RADIUS and asteroid.health <= 0:
-                        asteroid.split()
-                        score.increase(3)
+                if shot in shots_group and shot.is_colliding(asteroid):
+                    shot_to_remove = True
+                    if score.value >=2000:
+                        asteroid.health -=4
+                    elif score.value >= 1500 and score.value <= 1999:
+                        asteroid.health -= 3
+                    elif score.value >= 750 and score.value <= 1499:
+                        asteroid.health -= 2
+                    else:
+                        asteroid.health -= 1
+
+                    if asteroid.health <= 0:
+                        if asteroid.radius >= ASTEROID_MAX_RADIUS:
+                            asteroid.split()
+                            score.increase(1)
+                        elif asteroid.radius < ASTEROID_MAX_RADIUS and asteroid.radius > ASTEROID_MIN_RADIUS:
+                            asteroid.split()
+                            score.increase(2)
+                        elif asteroid.radius == ASTEROID_MIN_RADIUS:
+                            asteroid.split()
+                            score.increase(3)
                     break
+            if shot_to_remove and shot in shots_group:
+                shots_group.remove(shot)
 
         if game_duration >= 10 and score.value >= 50 and not powerup_1:
             global PLAYER_SHOOT_COOLDOWN
