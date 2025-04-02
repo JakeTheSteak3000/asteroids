@@ -1,7 +1,8 @@
 import pygame
 import random
-from asteroid import Asteroid
+from asteroid import *
 from constants import *
+from score import Score
 
 
 class AsteroidField(pygame.sprite.Sprite):
@@ -31,10 +32,35 @@ class AsteroidField(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self, self.containers)
         self.spawn_timer = 0.0
+        self.game_duration = 0
+        self.score_value = 0
+        self.diff_2 = False
+        self.diff_3 = False
+        self.diff_4 = False
+
+    def set_game_state(self, duration, score):
+        self.game_duration = duration
+        self.score_value = score
 
     def spawn(self, radius, position, velocity):
         asteroid = Asteroid(position.x, position.y, radius)
         asteroid.velocity = velocity
+        if self.game_duration >= 30 and self.score_value >= 250:
+            asteroid.health = 2
+            if not self.diff_2:
+                print("Difficulty 2!")
+                self.diff_2 = True
+        if self.game_duration >= 40 and self.score_value >= 400:
+            asteroid.health = 3
+            if not self.diff_3:
+                print("Difficulty 3!")
+                self.diff_3 = True
+        if self.game_duration >= 50 and self.score_value >= 600:
+            asteroid.health = 4
+            if not self.diff_4:
+                print("Difficulty 4!")
+                self.diff_4 = True
+        
 
     def update(self, dt):
         self.spawn_timer += dt

@@ -13,6 +13,7 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
         self.timer = 0
+        self.color = "white"
 
     # Add the triangle method from the instructions
     def triangle(self):
@@ -24,8 +25,11 @@ class Player(CircleShape):
         return [a, b, c]
 
     # Add the draw method we just discussed
+    def set_color(self, new_color):
+        self.color = new_color
+    
     def draw(self, screen):
-        pygame.draw.polygon(screen, "white", self.triangle(), 2)
+        pygame.draw.polygon(screen, self.color, self.triangle(), 2)
 
     def rotate(self, dt):
         self.rotation += PLAYER_TURN_SPEED * dt
@@ -62,8 +66,13 @@ class Player(CircleShape):
         front_point = ship_points[0]
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         shot_velocity = forward * PLAYER_SHOOT_SPEED
-        new_shot = Shot(front_point, shot_velocity)
+        new_shot = Shot(front_point, shot_velocity, self.color)
         return new_shot
+    
+    def set_cooldown(self, new_cooldown):
+        self.timer = 0
+        global PLAYER_SHOOT_COOLDOWN
+        PLAYER_SHOOT_COOLDOWN = new_cooldown
 
 
 
