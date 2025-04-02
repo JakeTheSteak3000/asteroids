@@ -39,8 +39,6 @@ class Asteroid(CircleShape):
         pygame.draw.circle(
             screen,
 
-            (255, 0, 0),
-
             color_to_use,
 
             (self.position.x, self.position.y),
