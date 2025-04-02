@@ -9,9 +9,6 @@ import time
 
 def main():
     pygame.init()
-
-    Font = pygame.font.SysFont("ninjago", 30)
-
     print("Starting Asteroids!")
     print("Screen width:", SCREEN_WIDTH)
     print("Screen height:", SCREEN_HEIGHT)
@@ -33,10 +30,6 @@ def main():
 
     shots_group = []
 
-    score = 0
-
-
-
     score = Score()
 
     start_time = time.time()
@@ -49,11 +42,9 @@ def main():
 
         
     
-
     running = True
-
+    
     while running:
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -75,17 +66,12 @@ def main():
 
         for asteroid in asteroids:
             if player.is_colliding(asteroid):
-                print(score)
                 print("Game over!")
                 sys.exit()
-
+        
         screen.fill("black")
-        # Render the score dynamically
-        score_text = Font.render(f"Score: {score}", False, "white", "black")
-        screen.blit(score_text, (10, 10))  # Position the score at the top-left corner
-
         for entity in drawable:
-            entity.draw(screen)
+            entity.draw(screen) 
 
         for shot in shots_group[:]:
             shot.update(dt)
@@ -99,15 +85,6 @@ def main():
         for shot in shots_group[:]:
             for asteroid in asteroids:
                 if shot.is_colliding(asteroid):
-
-                    score += 1
-                    asteroid.split()
-                    try:
-                        shots_group.remove(shot)
-                    except:
-                        pass
-
-
                     asteroid.health -= 1
                     shots_group.remove(shot)
                     if asteroid.radius >= ASTEROID_MAX_RADIUS and asteroid.health <= 0:
@@ -151,10 +128,10 @@ def main():
         
         
         score.render(screen)
-
         pygame.display.flip()
         dt = clock.tick(165) / 1000
 
+    
 
 if __name__ == "__main__":
     main()
