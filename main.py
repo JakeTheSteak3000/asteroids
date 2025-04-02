@@ -98,7 +98,7 @@ def main():
                         score.increase(3)
                     break
 
-        if game_duration >= 30 and score.value >= 50 and not powerup_1:
+        if game_duration >= 10 and score.value >= 50 and not powerup_1:
             global PLAYER_SHOOT_COOLDOWN
             PLAYER_SHOOT_COOLDOWN = 0.2
             player.set_cooldown(0.2)
