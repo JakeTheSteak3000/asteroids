@@ -14,6 +14,7 @@ class Player(CircleShape):
         self.rotation = 0
         self.timer = 0
         self.color = "white"
+        self.ts = PLAYER_TURN_SPEED
 
     
     # Add the triangle method from the instructions
@@ -33,10 +34,14 @@ class Player(CircleShape):
         pygame.draw.polygon(screen, self.color, self.triangle(), 2)
 
     def rotate(self, dt):
-        self.rotation += PLAYER_TURN_SPEED * dt
+        self.rotation += self.ts * dt
 
-    def update(self, dt):
+    def update(self, dt, keys=None, cooldown=None):
         keys = pygame.key.get_pressed()
+        slow_turn = keys[pygame.K_m]
+        og_ts = self.ts
+        if slow_turn:
+            self.ts = self.ts / 2
 
         if self.timer > 0:
             self.timer -= dt
@@ -50,6 +55,9 @@ class Player(CircleShape):
         if keys[pygame.K_s] or keys[pygame.K_DOWN]:
             self.move(-dt)
 
+        self.ts = og_ts
+
+        
         # Clamp the player's position within the screen boundaries
         self.position.x = max(self.radius, min(self.position.x, SCREEN_WIDTH - self.radius))
         self.position.y = max(self.radius, min(self.position.y, SCREEN_HEIGHT - self.radius))

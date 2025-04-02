@@ -32,6 +32,7 @@ def main():
 
     score = Score()
 
+
     start_time = time.time()
     game_duration = 0
 
@@ -39,6 +40,7 @@ def main():
     powerup_1 = False
     powerup_2 = False
     powerup_3 = False
+
 
     
 
@@ -141,11 +143,10 @@ def main():
         
 
         
-        
+
         score.render(screen)
         pygame.display.flip()
         dt = clock.tick(165) / 1000
-
     
 
 if __name__ == "__main__":
